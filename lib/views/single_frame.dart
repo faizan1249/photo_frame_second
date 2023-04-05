@@ -97,10 +97,32 @@ class _SingleFrameState extends State<SingleFrame> {
     _calculateImageDimension().then((size) {
       heightOgImge = size.height;
       widthOgImge = size.width;
+
+      log(heightOgImge.toString());
+
+      final scaledHeight = heightOgImge! * (MediaQuery.of(context).size.width / widthOgImge!);
+      log(scaledHeight.toString());
+      final aspectRatio = MediaQuery.of(context).size.width / scaledHeight;
+      print('Image aspect ratio: $aspectRatio');
+      print('Image Height: $heightOgImge');
+      print('height of decreased image = : '+ (heightOgImge! * aspectRatio).toString());
+      // heightOgImge = heightOgImge! * aspectRatio;
+
+      // setState(() {
+      //
+      // });
+
+
+      log("Media Query width");
+      log(MediaQuery.of(context).size.width.toString());
+      log(MediaQuery.of(context).size.height.toString());
+      log((heightOgImge! - (widthOgImge! - MediaQuery.of(context).size.width)).toString());
+
       log(size.height.toString());
       log(size.width.toString());
       print("size = ${size}");
       setState(() {
+        heightOgImge = scaledHeight;
         isLoading = false;
       });
     });
@@ -137,26 +159,30 @@ class _SingleFrameState extends State<SingleFrame> {
       child: OurScaffold(
         appBarTitle: "Photo Frame",
         scaffoldBody: isLoading ?CircularProgressIndicator():
-        Column(
-
-          children: [
-            AdCreation().showBannerAd(bannerAd),
-            Expanded(
-              child: Padding(
-                padding: //EdgeInsets.all(0),
-                    EdgeInsets.fromLTRB(
-                        0, 10, 0, MediaQuery.of(context).size.height * 0.12),
-                child: Center(
-                  child: SizedBox(
-                    width:widthOgImge??100,
-                    // width: double.infinity,
-                    height: heightOgImge??100,
+        // Column(
+        //
+        //   children: [
+            // AdCreation().showBannerAd(bannerAd),
+            // Expanded(
+            //   child:
+            //
+              Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  AdCreation().showBannerAd(bannerAd),
+                  SizedBox(
+                    // width:widthOgImge??100,
+                    width: double.infinity,
+                    // height:MediaQuery.of(context).size.width * 80,
+                    height: heightOgImge,
                     // height: MediaQuery.of(context).size.width,
+                    // width: 500,
+                    // height: (heightOgImge! - (widthOgImge! - MediaQuery.of(context).size.width)),
                     // height: MediaQuery.of(context).size.height * 80,
                     child: RepaintBoundary(
                       key: _globalKey,
                       child: Stack(
-                        alignment: Alignment.center,
+                        alignment: Alignment.bottomLeft,
                         children: [
                           if (widget.bannerModel.bannerName == "Frame Collage")
                             for (int i = 0; i < moveableImagesOnImage.length; i++)
@@ -299,11 +325,11 @@ class _SingleFrameState extends State<SingleFrame> {
                                     decoration: BoxDecoration(
                                       image: widget.imageDetal.category == "assets"
                                           ? DecorationImage(
-                                              fit: BoxFit.cover,
+                                              fit: BoxFit.fitWidth,
                                               image:
                                                   AssetImage(widget.imageDetal.path))
                                           : DecorationImage(
-                                              fit: BoxFit.cover,
+                                              fit: BoxFit.fitWidth,
                                               image: FileImage(
                                                   File(widget.imageDetal.path))),
                                     ),
@@ -366,11 +392,12 @@ class _SingleFrameState extends State<SingleFrame> {
                       ),
                     ),
                   ),
-                ),
+                  // Text(''),
+                ],
               ),
-            ),
-          ],
-        ),
+            // ),
+        //   ],
+        // ),
         bottomSheet: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,

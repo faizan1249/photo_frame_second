@@ -1,4 +1,5 @@
 
+import 'dart:developer';
 import 'dart:io';
 import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:flutter/material.dart';
@@ -175,8 +176,10 @@ class _SingleStaticWallpaperViewState extends State<SingleStaticWallpaperView> {
     try {
       if (await file.exists()) {
         await file.delete();
+        log("This is Try in deleteFile");
       }
     } catch (e) {
+      log("This is Cash in deleteFile");
       // Error in getting access to the file.
     }
   }
