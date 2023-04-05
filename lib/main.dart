@@ -27,6 +27,7 @@ void main() {
 void initializeFirabseStorage() async {
   await Firebase.initializeApp();
   // WidgetsFlutterBinding.ensureInitialized();
+// WidgetsFlutterBinding.ensureInitialized();
 }
 
 class MyApp extends StatelessWidget {
